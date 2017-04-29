@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <script>
+  var socket = new WebSocket("ws://sutoju-logic.eu-gb.mybluemix.net/ws/feed")
+  socket.addEventListener("message", function(event) {
+    var data = JSON.parse(event.data);
+    console.log(data.messageType == "food", data.action == "add");
+    if (data.messageType == "food" && data.action == "add") {
+      console.log("hello")
+      /*data.type = data.type.replace("pineapple", "&#127821;")
+      data.type = data.type.replace("apple", "&#127822;")
+      data.type = data.type.replace("cucumber", "&#129362")
+      data.type = data.type.replace("banana", "&#127820;")
+      data.type = data.type.replace("orange", "&#127818;")*/
+      document.getElementById("latestAddition").innerHTML=data.type;
+      document.getElementById("info").innerHTML="Use your dashboard to see all of your food."
+      setTimeout(function() {
+        document.getElementById("latestAddition").innerHTML=""
+        document.getElementById("info").innerHTML=""
+        console.log("delete items")
+      }, 4000)
+    }
+    // process data as string, blob, or ArrayBuffer
+  });
+  </script>
+  <style>
+  html {
+    width: 100%;
+    height: 90%;
+    font-size: 3em;
+    font-family: Segoe UI Emoji;
+  }
+  p {
+    font-size: 0.8em;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  div {
+    text-align: center;
+  }
+  </style>
+  <div>
+    <h1 id="latestAddition"></h1>
+    <p id="info"></p>
+  </div>
+</body>
+</html>
