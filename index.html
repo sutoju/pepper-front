@@ -5,7 +5,12 @@
 </head>
 <body>
   <script>
-  var socket = new WebSocket("ws://sutoju-logic.eu-gb.mybluemix.net/ws/feed")
+  var socket = new WebSocket("wss://sutoju-logic.eu-gb.mybluemix.net/ws/feed")
+  socket.addEventListener('close', function (event) {
+    setTimeout(function() {
+       var socket = new WebSocket("wss://sutoju-logic.eu-gb.mybluemix.net/ws/feed")
+    })
+  });
   socket.addEventListener("message", function(event) {
     var data = JSON.parse(event.data);
     console.log(data.messageType == "food", data.action == "add");
@@ -32,13 +37,13 @@
     width: 100%;
     height: 90%;
     font-size: 3em;
-    font-family: Segoe UI Emoji;
   }
   p {
     font-size: 0.8em;
   }
   body {
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
